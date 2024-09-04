@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 export class List {
@@ -31,5 +31,14 @@ export class List {
 
   @Column()
   result: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn({nullable: true})
+  updatedAt?: Date;
+
+  @Column()
+  deleted?: boolean;
 
 }

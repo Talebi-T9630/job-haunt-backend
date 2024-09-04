@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete,Query  } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,Query } from '@nestjs/common';
 import { ListService } from './list.service';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
@@ -13,24 +13,23 @@ export class ListController {
   }
 
   @Get()
-  findAll() {
-    return this.listService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.listService.findAll(search);
   }
 
-  @Get()
-  findOne(
-    @Param(':qualify') qualify?: string,
-    @Param(':result') result?: string) {
-    return this.listService.findOne(qualify,result);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.listService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
+  @Patch('update')
+  update(@Query('id') id: number, @Body() updateListDto: UpdateListDto) {
     return this.listService.update(+id, updateListDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.listService.remove(+id);
+  @Delete()
+   remove(@Query('ids') ids: string) {
+    const idArray = ids.split(',').map(id => +id);
+    return this.listService.remove(idArray);
   }
 }
